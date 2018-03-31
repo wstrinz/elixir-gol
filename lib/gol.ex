@@ -65,5 +65,39 @@ defmodule Gol do
   end
 
   def pretty_print(state) do
+    [maxx, _] = Enum.max_by(state, fn [x, _] -> x end)
+    [_, maxy] = Enum.max_by(state, fn [_, y] -> y end)
+    [minx, _] = Enum.min_by(state, fn [x, _] -> x end)
+    [_, miny] = Enum.min_by(state, fn [_, y] -> y end)
+
+    miny..maxy
+    |> Enum.map(fn y ->
+      minx..maxx
+      |> Enum.map(fn x ->
+        if cell_at(state, [x, y]), do: "*", else: "_"
+      end)
+      |> Enum.join()
+    end)
+    |> Enum.join("\n")
+  end
+
+  def print_loop(state) do
+    IO.puts(pretty_print(state))
+    IO.puts("\n")
+    :timer.sleep(1000)
+    state |> tick() |> print_loop()
+  end
+
+  def run() do
+    1..10
+    |> Enum.map(fn y ->
+      1..10
+      |> Enum.map(fn x ->
+        if :rand.uniform(6) == 1, do: [x, y], else: nil
+      end)
+    end)
+    |> List.foldl([], &(&1 ++ &2))
+    |> Enum.reject(&is_nil/1)
+    |> print_loop()
   end
 end

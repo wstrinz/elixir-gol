@@ -40,4 +40,8 @@ defmodule GolTest do
 
     assert Gol.tick(l_shape) == l_shape_next
   end
+
+  test "pretty print" do
+    assert Gol.pretty_print(@example_state) == "**\n*_"
+  end
 end
