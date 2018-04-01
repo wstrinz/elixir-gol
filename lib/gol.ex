@@ -1,11 +1,26 @@
 defmodule Gol do
-  alias Gol.Cell
+  def run() do
+    random_state()
+    |> print_loop()
+  end
 
-  def build(cell_list) do
-    Enum.map(cell_list, fn cell ->
-      [x, y] = cell
-      %Cell{x: x, y: y}
+  def random_state do
+    -10..10
+    |> Enum.map(fn y ->
+      -10..10
+      |> Enum.map(fn x ->
+        if :rand.uniform(6) == 1, do: [x, y], else: nil
+      end)
     end)
+    |> List.foldl([], &(&1 ++ &2))
+    |> Enum.reject(&is_nil/1)
+  end
+
+  def print_loop(state) do
+    IO.puts(pretty_print(state))
+    IO.puts("\n")
+    :timer.sleep(1000)
+    state |> tick() |> print_loop()
   end
 
   def tick(state) do
@@ -95,25 +110,5 @@ defmodule Gol do
 
   def string_for_cell(state, location) do
     if cell_at(state, location), do: "*", else: "_"
-  end
-
-  def print_loop(state) do
-    IO.puts(pretty_print(state))
-    IO.puts("\n")
-    :timer.sleep(1000)
-    state |> tick() |> print_loop()
-  end
-
-  def run() do
-    1..10
-    |> Enum.map(fn y ->
-      1..10
-      |> Enum.map(fn x ->
-        if :rand.uniform(6) == 1, do: [x, y], else: nil
-      end)
-    end)
-    |> List.foldl([], &(&1 ++ &2))
-    |> Enum.reject(&is_nil/1)
-    |> print_loop()
   end
 end
