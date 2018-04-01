@@ -42,6 +42,6 @@ defmodule GolTest do
   end
 
   test "pretty print" do
-    assert Gol.pretty_print(@example_state) == "**\n*_"
+    assert Gol.pretty_print_active_area(@example_state) == "**\n*_"
   end
 end

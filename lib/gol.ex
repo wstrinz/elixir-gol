@@ -64,7 +64,7 @@ defmodule Gol do
     ]
   end
 
-  def pretty_print(state) do
+  def pretty_print_active_area(state) do
     [maxx, _] = Enum.max_by(state, fn [x, _] -> x end)
     [_, maxy] = Enum.max_by(state, fn [_, y] -> y end)
     [minx, _] = Enum.min_by(state, fn [x, _] -> x end)
@@ -74,11 +74,27 @@ defmodule Gol do
     |> Enum.map(fn y ->
       minx..maxx
       |> Enum.map(fn x ->
-        if cell_at(state, [x, y]), do: "*", else: "_"
+        string_for_cell(state, [x, y])
       end)
       |> Enum.join()
     end)
     |> Enum.join("\n")
+  end
+
+  def pretty_print(state) do
+    -10..10
+    |> Enum.map(fn y ->
+      -10..10
+      |> Enum.map(fn x ->
+        string_for_cell(state, [x, y])
+      end)
+      |> Enum.join()
+    end)
+    |> Enum.join("\n")
+  end
+
+  def string_for_cell(state, location) do
+    if cell_at(state, location), do: "*", else: "_"
   end
 
   def print_loop(state) do
