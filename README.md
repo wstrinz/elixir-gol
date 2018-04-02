@@ -1,6 +1,6 @@
 # Gol
 
-**TODO: Add description**
+`mix run -e "Gol.run()"`
 
 ## Installation
 
